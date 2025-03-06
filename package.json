@@ -1,0 +1,45 @@
+{
+  "name": "auth",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "NODE_ENV=production tsx src/main.ts",
+    "build": "pnpm run build:tailwind",
+    "build:tailwind": "postcss src/main.css -o public/main.css",
+    "dev:tailwind": "postcss src/main.css -o public/main.css -w",
+    "dev:server": "nodemon -w src -x tsx src/main.ts",
+    "dev": "concurrently 'pnpm run dev:tailwind' 'pnpm run dev:server'"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.11",
+    "argon2": "^0.41.1",
+    "better-sqlite3": "^11.8.1",
+    "better-sqlite3-session-store": "^0.1.0",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^5.0.1",
+    "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "handlebars": "^4.7.8",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^4.0.11",
+    "totp-generator": "^1.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
+    "@types/node": "^22.13.9",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "argon2",
+      "better-sqlite3"
+    ]
+  }
+}
