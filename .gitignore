@@ -1,7 +1,8 @@
-node_modules
-dist
 .env
 *.sqlite
+node_modules/
+dist/
+result/
 
 # PostCSS output
 public/main.css

@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "serve": "NODE_ENV=production tsx src/main.ts",
-    "build": "pnpm run build:tailwind",
+    "build": "concurrently 'pnpm run build:tailwind' 'pnpm run build:typescript'",
+    "build:typescript": "tsc",
     "build:tailwind": "postcss src/main.css -o public/main.css",
     "dev:tailwind": "postcss src/main.css -o public/main.css -w",
     "dev:server": "nodemon -w src -x tsx src/main.ts",
