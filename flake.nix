@@ -12,26 +12,29 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         self-packages = self.packages.${system};
+        run-script-name = "auth-server-run";
+        pnpm = pkgs.pnpm_10;
       in
       {
         devShells.default = pkgs.mkShell { packages = [
           pkgs.bashInteractive
           pkgs.nodejs
-          pkgs.pnpm
+          pnpm
         ]; };
 
         apps.default = {
           type = "app";
-          program = "${self-packages.run}/bin/run";
+          program = "${self-packages.run}/bin/${run-script-name}";
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
           pname = "auth-server";
           version = "0.1.0";
           src = ./.;
-          buildInputs = [ pkgs.nodejs pkgs.pnpm.configHook ];
+          buildInputs = [ pkgs.nodejs pnpm.configHook ];
 
           buildPhase = ''
+            pnpm rb
             pnpm run build
           '';
 
@@ -43,16 +46,18 @@
             cp -r src $out
           '';
 
-          pnpmDeps = pkgs.pnpm.fetchDeps {
+          pnpmDeps = pnpm.fetchDeps {
             inherit (self-packages.default) pname version src;
             hash = "sha256-2saQOvsFCQc6EwIpKODGjjlUi8jPzZ15MnR294Lij6g=";
           };
         };
 
-        packages.run = pkgs.writeShellScriptBin "auth-server" ''
+        packages.run = pkgs.writeShellScriptBin run-script-name ''
           cd ${self-packages.default}
-          ${pkgs.pnpm}/bin/pnpm run serve "$@"
+          ${pnpm}/bin/pnpm run serve "$@"
         '';
+
+        pnpmInstallFlags = [ "--ignore-scripts=false" ];
       }
     );
 }

@@ -14,7 +14,7 @@ export const getKeys = async function(): Promise<Array<{ id: number, name: strin
 	return getKeysStmt.all() as Array<{ id: number, name: string, key: string }>;
 }
 
-const getDigestStmt = db.prepare("SELECT value FROM config WHERE key = 'password-digest'")
+const getDigestStmt = db.prepare("SELECT value FROM config WHERE key = 'password-digest'");
 export const checkPassword = async function(password: string): Promise<boolean> {
 	const { value: digest } = getDigestStmt.get() as { value: string };
 	return verify(digest, password);
