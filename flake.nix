@@ -42,7 +42,6 @@
             mkdir -p $out
             cp package.json $out
             cp -r node_modules $out
-            cp -r public $out
             cp -r src $out
           '';
 

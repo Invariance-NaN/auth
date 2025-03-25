@@ -20,7 +20,6 @@ myPnpmConfigHook() {
     cp -Tr "$pnpmDeps" "$STORE_PATH"
     chmod -R +w "$STORE_PATH"
 
-
     # If the packageManager field in package.json is set to a different pnpm version than what is in nixpkgs,
     # any pnpm command would fail in that directory, the following disables this
     pushd ..
@@ -46,10 +45,11 @@ myPnpmConfigHook() {
 
     pnpm install \
         --offline \
-        # --ignore-scripts \
+        --ignore-scripts \
         "${pnpmInstallFlags[@]}" \
         --frozen-lockfile
 
+    # pnpm rb
 
     echo "Patching scripts"
 
