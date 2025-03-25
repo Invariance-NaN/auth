@@ -31,11 +31,10 @@
           pname = "auth-server";
           version = "0.1.0";
           src = ./.;
-          builder = "./builder.sh";
+          builder = ./builder.sh;
           buildInputs = [ pkgs.nodejs pnpm.configHook ];
 
           buildPhase = ''
-            pnpm rb
             pnpm run build
           '';
 
