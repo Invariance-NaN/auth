@@ -30,9 +30,8 @@
         packages.default = pkgs.stdenv.mkDerivation {
           pname = "auth-server";
           version = "0.1.0";
-          src = builtins.path { name = "auth"; path = ./.; };
-          dontUnpack = true;
-
+          src = ./.;
+          builder = "./builder.sh";
           buildInputs = [ pkgs.nodejs pnpm.configHook ];
 
           buildPhase = ''
