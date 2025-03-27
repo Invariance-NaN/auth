@@ -49,7 +49,11 @@ myPnpmConfigHook() {
         "${pnpmInstallFlags[@]}" \
         --frozen-lockfile
 
-    # pnpm rb
+    pushd node_modules/better-sqlite3
+    node-gyp rebuild --release
+    popd
+
+    pnpm rb
 
     echo "Patching scripts"
 
