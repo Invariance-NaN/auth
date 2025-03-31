@@ -12,7 +12,6 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         self-packages = self.packages.${system};
-        run-script-name = "auth-server-run";
         pnpm = pkgs.pnpm_10;
       in
       {
@@ -22,19 +21,14 @@
           pnpm
         ]; };
 
-        apps.default = {
-          type = "app";
-          program = "${self-packages.run}/bin/${run-script-name}";
-        };
-
         packages.default = pkgs.stdenv.mkDerivation {
-          pname = "auth-server";
+          pname = "my-app";
           version = "0.1.0";
           src = ./.;
-          builder = ./builder.sh;
-          buildInputs = [ pkgs.nodejs pnpm.configHook pkgs.node-gyp pkgs.python314 pkgs.jq ];
+          buildInputs = [ pkgs.nodejs pnpm.configHook ];
 
           buildPhase = ''
+            pnpm rb
             pnpm run build
           '';
 
@@ -47,16 +41,9 @@
 
           pnpmDeps = pnpm.fetchDeps {
             inherit (self-packages.default) pname version src;
-            hash = "sha256-2saQOvsFCQc6EwIpKODGjjlUi8jPzZ15MnR294Lij6g=";
+            hash = "sha256-vYsjdAZ4ceJ6sHZwNboL/wvS47RvMLx8bmWWB5v3/SM=";
           };
         };
-
-        packages.run = pkgs.writeShellScriptBin run-script-name ''
-          cd ${self-packages.default}
-          ${pnpm}/bin/pnpm run serve "$@"
-        '';
-
-        pnpmInstallFlags = [ "--ignore-scripts=false" ];
       }
     );
 }

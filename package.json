@@ -1,9 +1,9 @@
 {
-  "name": "auth",
+  "name": "my-app",
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "build": "echo 'build goes here'"
+    "build": "echo 'insert build here'"
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1"
