@@ -1,4 +1,3 @@
-import "dotenv/config";
 import path from "path";
 
 const args = process.argv.slice(2);

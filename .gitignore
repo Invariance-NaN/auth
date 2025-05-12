@@ -2,7 +2,7 @@
 *.sqlite
 node_modules/
 dist/
-result/
+result
 
 # PostCSS output
 public/main.css
