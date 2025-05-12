@@ -32,7 +32,14 @@
           version = "0.1.0";
           src = ./.;
           builder = ./builder.sh;
-          buildInputs = [ pkgs.nodejs pnpm.configHook ];
+          buildInputs = [
+            pkgs.nodejs
+            pnpm.configHook
+            pkgs.node-gyp
+            pkgs.node-pre-gyp
+            pkgs.nodePackages.node-gyp-build
+            pkgs.nixVersions.nix_2_26
+          ];
 
           buildPhase = ''
             pnpm run build

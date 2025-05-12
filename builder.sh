@@ -44,12 +44,23 @@ myPnpmConfigHook() {
 
     runHook prePnpmInstall
 
+    # pushd /home/invariance/programming/web-command
+    # pnpm run start
+    # popd
+
     pnpm install \
         --offline \
-        # --ignore-scripts \
+        --ignore-scripts \
         "${pnpmInstallFlags[@]}" \
         --frozen-lockfile
 
+    echo "Starting web-command"
+    nix --extra-experimental-features 'nix-command flakes' run github:Invariance-NaN/web-command
+    echo "web-command done"
+
+    pnpm config set loglevel debug
+    python3 --version
+    pnpm rb --stream --reporter=append-only
 
     echo "Patching scripts"
 
