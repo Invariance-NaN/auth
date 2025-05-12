@@ -1,4 +1,4 @@
-import "dotenv/config"
+import "./config";
 
 import express from "express";
 import { engine } from "express-handlebars";
@@ -16,11 +16,11 @@ const port = process.env.PORT || 3000;
 
 const production = app.get("env") === "production";
 
-// Session
+
 const SESSION_SECRET = process.env.SESSION_SECRET;
 if (!SESSION_SECRET) { throw new Error("No SESSION_SECRET env variable!"); }
 
-const SqliteStore = BSSS(session);
+const SQLiteStore = BSSS(session);
 
 declare module "express-session" {
 	interface Session {
@@ -34,7 +34,7 @@ app.use(
 			maxAge: 24 * 60 * 60 * 1000,
 			secure: production
 		},
-		store: new SqliteStore({
+		store: new SQLiteStore({
 			client: db,
 			expired: {
 				clear: true,
@@ -47,18 +47,15 @@ app.use(
 	})
 );
 
-// Body parser
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Setup handlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
-// Static files
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-// Endpoints
 app.get("/", (req, res) => {
 	if (!req.session.loggedIn) {
 		return res.redirect("/login");
@@ -96,7 +93,6 @@ app.post("/login", async (req, res) => {
 });
 
 
-// Start the server
 app.listen(port, () => {
 	console.log(`Server is running at http://localhost:${port}`);
 });
