@@ -9,7 +9,9 @@
     "build:tailwind": "postcss src/main.css -o public/main.css",
     "dev:tailwind": "postcss src/main.css -o public/main.css -w",
     "dev:server": "nodemon -w src -x tsx src/main.ts dev.sqlite",
-    "dev": "concurrently 'pnpm run dev:tailwind' 'pnpm run dev:server'"
+    "dev": "concurrently 'pnpm run dev:tailwind' 'pnpm run dev:server'",
+
+    "postinstall": "node2nix -c node-composition.nix"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.11",
