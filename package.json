@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "serve": "NODE_ENV=production tsx src/main.ts",
-    "build": "concurrently 'pnpm run build:tailwind' 'pnpm run build:typescript'",
-    "build:typescript": "tsc",
-    "build:tailwind": "postcss src/main.css -o public/main.css",
-    "dev:tailwind": "postcss src/main.css -o public/main.css -w",
-    "dev:server": "nodemon -w src -x tsx src/main.ts dev.sqlite",
-    "dev": "concurrently 'pnpm run dev:tailwind' 'pnpm run dev:server'"
+    "serve": "NODE_ENV=production bun src/main.ts",
+    "build": "postcss src/main.css -o public/main.css",
+
+    "dev:postcss": "postcss src/main.css -o public/main.css -w",
+    "dev:server": "nodemon -w src -x bun src/main.ts dev.sqlite",
+    "dev": "concurrently 'pnpm run dev:postcss' 'pnpm run dev:server'",
+
+    "postinstall": "bun2nix -o bun.nix"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.11",
@@ -25,9 +26,10 @@
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.0",
     "tailwindcss": "^4.0.11",
-    "totp-generator": "^1.0.0",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "totp-generator": "^1.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
@@ -36,12 +38,5 @@
     "@types/node": "^22.13.9",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "argon2",
-      "better-sqlite3",
-      "esbuild"
-    ]
   }
 }
