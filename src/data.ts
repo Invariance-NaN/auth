@@ -1,8 +1,8 @@
 import sqlite3 from "better-sqlite3";
 import { verify } from "argon2";
-import { dbPath } from "./config";
+import { DB_PATH } from "./config";
 
-export const db = sqlite3(dbPath);
+export const db = sqlite3(DB_PATH);
 
 db.exec(`
 	CREATE TABLE IF NOT EXISTS "config" ( "key" varchar NOT NULL PRIMARY KEY, "value" varchar );

@@ -10,15 +10,12 @@ import path from "path";
 import { TOTP } from "totp-generator"
 
 import { checkPassword, db, getKeys } from "./data";
+import { PORT, SESSION_SECRET } from "./config";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 const production = app.get("env") === "production";
 
-
-const SESSION_SECRET = process.env.SESSION_SECRET;
-if (!SESSION_SECRET) { throw new Error("No SESSION_SECRET env variable!"); }
 
 const SQLiteStore = BSSS(session);
 
@@ -61,7 +58,7 @@ app.get("/", (req, res) => {
 		return res.redirect("/login");
 	}
 
-	res.render("pages/index", { title: 'TailwindCSS with Express!' });
+	res.render("pages/index");
 });
 
 app.get("/codes", async (req, res) => {
@@ -93,6 +90,6 @@ app.post("/login", async (req, res) => {
 });
 
 
-app.listen(port, () => {
-	console.log(`Server is running at http://localhost:${port}`);
+app.listen(PORT, () => {
+	console.log(`Server is running at http://localhost:${PORT}`);
 });

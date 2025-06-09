@@ -1,6 +1,12 @@
-import path from "path";
+const getEnvVar = function(name: string): string {
+	const value = process.env[name];
+	if (!value) {
+		throw new Error(`Enviornment variable ${name} must be set`);
+	}
+	return value;
+}
 
-const args = process.argv.slice(2);
-
-if (args.length !== 1 || args[0].length === 0) { throw new Error("Usage: auth-server <database file>"); }
-export const dbPath = path.resolve(args[0]);
+// TODO: error handling for bad "PORT" values?
+export const PORT: number = +getEnvVar("PORT");
+export const SESSION_SECRET: string = getEnvVar("SESSION_SECRET");
+export const DB_PATH: string = getEnvVar("DB_PATH");
