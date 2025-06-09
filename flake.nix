@@ -7,18 +7,46 @@
     inputs.systems.follows = "systems";
   };
 
-  outputs =
-    { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
+  outputs = { nixpkgs, flake-utils, self, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+
+        auth-package = pkgs.buildNpmPackage {
+          name = "auth";
+
+          buildInputs = [ pkgs.nodejs ];
+
+          src = self;
+          npmDeps = pkgs.importNpmLock { npmRoot = ./.;  };
+          npmConfigHook = pkgs.importNpmLock.npmConfigHook;
+
+          installPhase = ''
+            mkdir $out
+            cp -r ./* $out
+          '';
+        };
+
+        runner-package = pkgs.writeShellApplication {
+          name = "auth";
+          runtimeInputs = [ pkgs.nodejs ];
+          text = ''
+            cd ${auth-package}
+            npm run serve
+          '';
+        };
       in
       {
+        apps.default = {
+          type = "app";
+          program = "${runner-package}/bin/auth";
+        };
+        packages.default = auth-package;
+
         devShells.default = pkgs.mkShell { packages = [
           pkgs.bashInteractive
           pkgs.nodejs
-          pkgs.pnpm
+          # pkgs.pnpm
         ]; };
       }
     );

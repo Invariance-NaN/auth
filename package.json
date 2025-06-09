@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "scripts": {
     "serve": "NODE_ENV=production tsx src/main.ts",
-    "build": "concurrently 'pnpm run build:tailwind' 'pnpm run build:typescript'",
+    "build": "concurrently 'npm run build:tailwind' 'npm run build:typescript'",
     "build:typescript": "tsc",
     "build:tailwind": "postcss src/main.css -o public/main.css",
     "dev:tailwind": "postcss src/main.css -o public/main.css -w",
     "dev:server": "nodemon -w src -x tsx src/main.ts dev.sqlite",
-    "dev": "concurrently 'pnpm run dev:tailwind' 'pnpm run dev:server'"
+    "dev": "concurrently 'npm run dev:tailwind' 'npm run dev:server'"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.11",
